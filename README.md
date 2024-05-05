@@ -1,4 +1,5 @@
 Fixes the Minecraft KillCredit System:
+
 The killer is now the one, who did the last hit. This also applies to none entity damage death causes. If there are no combat tracker entries, because the entity is not in combat, there is no killer.
 
 Adds a new Command "/combattracker":
