@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "tuxi.wolfbugs.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "wolfbugs.refmap.json",
+  "mixins": [
+    "CombatTrackerMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
