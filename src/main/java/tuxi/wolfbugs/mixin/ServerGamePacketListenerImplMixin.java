@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import tuxi.wolfbugs.WolfBugs;
 
 @Mixin(ServerGamePacketListenerImpl.class)
 public abstract class ServerGamePacketListenerImplMixin {
@@ -25,7 +26,7 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @Inject(method = "handleChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;submit(Ljava/lang/Runnable;)Ljava/util/concurrent/CompletableFuture;"), cancellable = true)
     private void changeChatVisiblity(ServerboundChatPacket p_9841_, CallbackInfo ci) {
-        if (server.getProfilePermissions(player.getGameProfile()) < 2) {
+        if (server.getProfilePermissions(player.getGameProfile()) < 2 && !server.getGameRules().getBoolean(WolfBugs.RULE_ALLOWCHATTING)) {
             send(new ClientboundSystemChatPacket(Component.translatable("chat.cannotSend").withStyle(ChatFormatting.RED), false));
             ci.cancel();
         }

@@ -5,9 +5,12 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "wolfbugs.refmap.json",
   "mixins": [
+    "BooleanValueAccessor",
     "CombatTrackerMixin",
-    "CommandsMixin",
-    "ServerGamePacketListenerImplMixin"
+    "EmoteCommandsMixin",
+    "MsgCommandMixin",
+    "ServerGamePacketListenerImplMixin",
+    "TeamMsgCommandMixin"
   ],
   "client": [
   ],

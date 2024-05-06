@@ -1,6 +1,7 @@
 package tuxi.wolfbugs;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.world.level.GameRules;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -13,12 +14,15 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import tuxi.wolfbugs.commands.CombatTrackerCommand;
+import tuxi.wolfbugs.mixin.BooleanValueAccessor;
 
 @Mod(WolfBugs.MODID)
 public class WolfBugs {
 
     public static final String MODID = "wolfbugs";
     public static final Logger LOGGER = LogUtils.getLogger();
+
+    public static final GameRules.Key<GameRules.BooleanValue> RULE_ALLOWCHATTING = GameRules.register("allowChatting", GameRules.Category.CHAT, BooleanValueAccessor.create(false));
 
     public WolfBugs() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
