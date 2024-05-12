@@ -3,7 +3,6 @@ package tuxi.wolfbugs.mixin;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.MessageArgument;
@@ -18,7 +17,7 @@ import tuxi.wolfbugs.WolfBugs;
 @Mixin(TeamMsgCommand.class)
 public abstract class TeamMsgCommandMixin {
     @Shadow
-    private static int sendMessage(CommandSourceStack p_214763_, MessageArgument.ChatMessage p_214764_) throws CommandSyntaxException {
+    private static int sendMessage(CommandSourceStack p_214763_, MessageArgument.ChatMessage p_214764_) {
         throw new AssertionError();
     }
 

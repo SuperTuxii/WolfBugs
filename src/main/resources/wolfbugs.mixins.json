@@ -9,7 +9,6 @@
     "CombatTrackerMixin",
     "EmoteCommandsMixin",
     "MsgCommandMixin",
-    "ServerGamePacketListenerImplMixin",
     "TeamMsgCommandMixin"
   ],
   "client": [
