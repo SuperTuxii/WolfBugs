@@ -13,7 +13,9 @@ The killer is now the one, who did the last hit. This also applies to none entit
 - `/combattracker clear <targets> `(Clears the combat trackers of the given targets. Returns the amount of combat trackers that got cleared)
 
 
-**Disables the chat:** (version 1.1)
+**Adds a new gamerule `allowChatting`:**
 
-When trying to send a message without permission level 2+, the server responds with "Cannot send chat message" and cancels the message.  
-The Commands `/me`, `/msg`, `/teammsg` and associated commands require permission level 2+ from now on.
+- when true, all player can chat and use chatting commands.
+- when false, only players with permission level 2+ can chat and use chatting commands. (default)
+
+Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
