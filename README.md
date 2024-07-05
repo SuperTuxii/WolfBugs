@@ -19,3 +19,7 @@ The killer is now the one, who did the last hit. This also applies to none entit
 - when false, only players with permission level 2+ can chat and use chatting commands. (default)
 
 Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
+
+**Fixes Bug with Corpse Mod in 1.19.2**:
+
+[Detailed Issue](https://github.com/henkelmax/corpse/issues/186)
