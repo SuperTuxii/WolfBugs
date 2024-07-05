@@ -16,6 +16,8 @@ import java.util.List;
 public abstract class CombatTrackerMixin implements CombatTrackerContainer {
     @Shadow @Final private List<CombatEntry> entries;
 
+    @Shadow @Final private LivingEntity mob;
+
     @Inject(method = "getKiller", at = @At("HEAD"), cancellable = true)
     private void onGetKiller(CallbackInfoReturnable<LivingEntity> cir) {
         cir.setReturnValue(null);
@@ -36,6 +38,8 @@ public abstract class CombatTrackerMixin implements CombatTrackerContainer {
 
     @Override
     public boolean wolfBugs$removeLatest(LivingEntity entity) {
+        if (((LivingEntityAccessor) mob).getLastHurtByPlayer().is(entity)) mob.setLastHurtByMob(null);
+        if (mob.getLastHurtByMob() != null && mob.getLastHurtByMob().is(entity)) mob.setLastHurtByMob(null);
         entries.sort(Comparator.comparingInt(CombatEntry::getTime));
         for (int i = entries.size()-1; i >= 0; i--) {
             CombatEntry entry = entries.get(i);
@@ -50,6 +54,8 @@ public abstract class CombatTrackerMixin implements CombatTrackerContainer {
     @Override
     public int wolfBugs$remove(LivingEntity entity) {
         int found = 0;
+        if (((LivingEntityAccessor) mob).getLastHurtByPlayer().is(entity)) mob.setLastHurtByMob(null);
+        if (mob.getLastHurtByMob() != null && mob.getLastHurtByMob().is(entity)) mob.setLastHurtByMob(null);
         entries.sort(Comparator.comparingInt(CombatEntry::getTime));
         for (int i = entries.size()-1; i >= 0; i--) {
             CombatEntry entry = entries.get(i);
@@ -65,6 +71,8 @@ public abstract class CombatTrackerMixin implements CombatTrackerContainer {
     public boolean wolfBugs$clear() {
         if (entries.isEmpty()) return false;
         entries.clear();
+        mob.setLastHurtByPlayer(null);
+        mob.setLastHurtByMob(null);
         return true;
     }
 }

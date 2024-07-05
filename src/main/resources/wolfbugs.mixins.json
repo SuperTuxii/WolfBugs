@@ -7,7 +7,9 @@
   "mixins": [
     "BooleanValueAccessor",
     "CombatTrackerMixin",
+    "CorpseInventoryContainerMixin",
     "EmoteCommandsMixin",
+    "LivingEntityAccessor",
     "MsgCommandMixin",
     "TeamMsgCommandMixin"
   ],
