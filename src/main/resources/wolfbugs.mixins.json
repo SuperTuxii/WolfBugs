@@ -6,6 +6,7 @@
   "refmap": "wolfbugs.refmap.json",
   "mixins": [
     "BooleanValueAccessor",
+    "ClientboundPlayerInfoPacketMixin",
     "CombatTrackerMixin",
     "CorpseInventoryContainerMixin",
     "EmoteCommandsMixin",

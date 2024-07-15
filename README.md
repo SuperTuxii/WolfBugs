@@ -20,6 +20,12 @@ The killer is now the one, who did the last hit. This also applies to none entit
 
 Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
 
-**Fixes Bug with Corpse Mod in 1.19.2**:
+**Fixes Bug with Corpse Mod in 1.19.2:**
 
 [Detailed Issue](https://github.com/henkelmax/corpse/issues/186)
+
+**Sets the font formatting used in Tab List to the one used by the default gamemode:**
+
+When default gamemode is:
+- spectator, the text in the Tab List will be cursive.
+- anything else, the text in the Tab List will be normal.
