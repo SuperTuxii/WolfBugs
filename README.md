@@ -1,6 +1,3 @@
-### This is a server-only mod and is not needed on the client
-
-
 **Fixes the Minecraft KillCredit System:**
 
 The killer is now the one, who did the last hit. This also applies to none entity damage death causes. If there are no combat tracker entries, because the entity is not in combat, there is no killer.
@@ -15,7 +12,7 @@ The killer is now the one, who did the last hit. This also applies to none entit
 
 **Adds a new gamerule `allowChatting`:**
 
-- when true, all player can chat and use chatting commands.
+- when true, all players can chat and use chatting commands.
 - when false, only players with permission level 2+ can chat and use chatting commands. (default)
 
 Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
@@ -24,8 +21,4 @@ Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
 
 [Detailed Issue](https://github.com/henkelmax/corpse/issues/186)
 
-**Sets the font formatting used in Tab List to the one used by the default gamemode:**
-
-When default gamemode is:
-- spectator, the text in the Tab List will be cursive.
-- anything else, the text in the Tab List will be normal.
+**Makes the font formatting used in PlayerTabOverlay ignore the gamemode**
