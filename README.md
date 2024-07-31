@@ -21,4 +21,4 @@ Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
 
 [Detailed Issue](https://github.com/henkelmax/corpse/issues/186)
 
-**Makes the font formatting used in PlayerTabOverlay ignore the gamemode**
+**Makes the PlayerTabOverlay ignore the gamemode**
