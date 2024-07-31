@@ -1,11 +1,18 @@
 package tuxi.wolfbugs;
 
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.components.PlayerTabOverlay;
+import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -17,6 +24,8 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import org.slf4j.Logger;
 import tuxi.wolfbugs.commands.CombatTrackerCommand;
 import tuxi.wolfbugs.mixin.BooleanValueAccessor;
+
+import java.util.Comparator;
 
 @Mod(WolfBugs.MODID)
 public class WolfBugs {
@@ -57,9 +66,20 @@ public class WolfBugs {
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
 
+        public static final Ordering<PlayerInfo> PLAYERLIST_ORDERING = Ordering.from(new WolfBugs.ClientModEvents.PlayerInfoComparator());
+
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             // Some client setup code
+        }
+
+        @OnlyIn(Dist.CLIENT)
+        static class PlayerInfoComparator implements Comparator<PlayerInfo> {
+            public int compare(PlayerInfo p_94564_, PlayerInfo p_94565_) {
+                PlayerTeam playerteam = p_94564_.getTeam();
+                PlayerTeam playerteam1 = p_94565_.getTeam();
+                return ComparisonChain.start().compare(playerteam != null ? playerteam.getName() : "", playerteam1 != null ? playerteam1.getName() : "").compare(p_94564_.getProfile().getName(), p_94565_.getProfile().getName(), String::compareToIgnoreCase).result();
+            }
         }
     }
 }
