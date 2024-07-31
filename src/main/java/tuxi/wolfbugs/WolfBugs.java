@@ -4,12 +4,10 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.components.PlayerTabOverlay;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -35,7 +33,7 @@ public class WolfBugs {
 
     public static final GameRules.Key<GameRules.BooleanValue> RULE_ALLOWCHATTING = GameRules.register("allowChatting", GameRules.Category.CHAT, BooleanValueAccessor.create(false));
 
-    private static final String PROTOCOL_VERSION = "1";
+    private static final String PROTOCOL_VERSION = "1.3.2";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MODID, "main"),
             () -> PROTOCOL_VERSION,
