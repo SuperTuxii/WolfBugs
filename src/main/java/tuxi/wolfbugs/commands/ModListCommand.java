@@ -103,19 +103,19 @@ public class ModListCommand {
                     list.append(mod);
                     list.append("§f, ");
                 }
-            }else if (deniedMods.contains(mod)) {
+            } else if (deniedMods.contains(mod)) {
                 onlyAllowed = false;
                 list.append("§c");
                 list.append(mod);
                 list.append("§f, ");
-            }else {
+            } else {
                 onlyAllowed = false;
                 list.append("§e");
                 list.append(mod);
                 list.append("§f, ");
             }
         }
-        list.replace(list.lastIndexOf("§f, "), list.length(), "");
+        if (list.toString().contains("§f, ")) list.replace(list.lastIndexOf("§f, "), list.length(), "");
         return onlyAllowed && !fullList ? "§2Only allowed mods have been found" : list.toString();
     }
 }
