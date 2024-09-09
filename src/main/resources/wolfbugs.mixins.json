@@ -9,8 +9,10 @@
     "CombatTrackerMixin",
     "CorpseInventoryContainerMixin",
     "EmoteCommandsMixin",
+    "HandshakeHandlerMixin",
     "LivingEntityAccessor",
     "MsgCommandMixin",
+    "PlayerListMixin",
     "TeamMsgCommandMixin"
   ],
   "client": [

@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,16 +15,22 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.slf4j.Logger;
 import tuxi.wolfbugs.commands.CombatTrackerCommand;
+import tuxi.wolfbugs.commands.ModListCommand;
 import tuxi.wolfbugs.mixin.BooleanValueAccessor;
 
-import java.util.Comparator;
+import java.net.SocketAddress;
+import java.util.*;
 
 @Mod(WolfBugs.MODID)
 public class WolfBugs {
@@ -32,6 +39,9 @@ public class WolfBugs {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final GameRules.Key<GameRules.BooleanValue> RULE_ALLOWCHATTING = GameRules.register("allowChatting", GameRules.Category.CHAT, BooleanValueAccessor.create(false));
+
+    public static final HashMap<SocketAddress, List<String>> scheduleModList = new HashMap<>();
+    public static final HashMap<UUID, List<String>> modList = new HashMap<>();
 
     private static final String PROTOCOL_VERSION = "1.3.2";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -44,6 +54,7 @@ public class WolfBugs {
     public WolfBugs() {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, WolfBugsConfig.GENERAL_SPEC, "wolfbugs.toml");
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -58,6 +69,7 @@ public class WolfBugs {
     @SubscribeEvent
     public void onCommandsRegister(RegisterCommandsEvent event) {
         CombatTrackerCommand.register(event.getDispatcher());
+        ModListCommand.register(event.getDispatcher());
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

@@ -9,6 +9,12 @@ The killer is now the one, who did the last hit. This also applies to none entit
 - `/combattracker remove all <targets> <entityToRemove>` (Removes all entries by the given entity in the combat trackers of the given targets. Returns the amount of entries that got removed)
 - `/combattracker clear <targets> `(Clears the combat trackers of the given targets. Returns the amount of combat trackers that got cleared)
 
+**Adds a new Command `/modlist`:**
+
+- `/modlist show <target> <fullList>` (Shows the ModList for the given target. If fullList is true, the full ModList will be outputted, otherwise all whitelisted mods will be filtered out)
+- `/modlist allow <modId>` (Adds the given modId to the Mod-WhiteList)
+- `/modlist deny <modId>` (Adds the given modId to the Mod-BlackList)
+- `/modlist neutralize <modId>` (Removes the given modId from the Mod-WhiteList and Adds the given modId to the Mod-BlackList)
 
 **Adds a new gamerule `allowChatting`:**
 
