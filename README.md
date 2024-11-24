@@ -16,6 +16,11 @@ The killer is now the one, who did the last hit. This also applies to none entit
 - `/modlist deny <modId>` (Adds the given modId to the Mod-BlackList)
 - `/modlist neutralize <modId>` (Removes the given modId from the Mod-WhiteList and the Mod-BlackList)
 
+**Adds a new Command `/morph` & `/unmorph`:**
+
+- `/morph <morphPlayer> <morphIntoTarget>` (Changes the morphPlayer to look like the morphIntoTarget while not changing the PlayerTabOverlay)
+- `/unmorph <morphedPlayer>` (Changes the morphedPlayer back to the correct Player (same as `/morph` with morphPlayer and morphIntoTarget being the same))
+
 **Adds a new gamerule `allowChatting`:**
 
 - when true, all players can chat and use chatting commands.

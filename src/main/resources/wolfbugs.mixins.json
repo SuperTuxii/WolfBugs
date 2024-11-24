@@ -13,6 +13,8 @@
     "LivingEntityAccessor",
     "MsgCommandMixin",
     "PlayerListMixin",
+    "PlayerUpdateAccessor",
+    "ServerEntityMixin",
     "TeamMsgCommandMixin"
   ],
   "client": [
