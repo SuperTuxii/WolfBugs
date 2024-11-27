@@ -13,11 +13,10 @@
     "LivingEntityAccessor",
     "MsgCommandMixin",
     "PlayerListMixin",
-    "PlayerUpdateAccessor",
-    "ServerEntityMixin",
     "TeamMsgCommandMixin"
   ],
   "client": [
+    "PlayerInfoMixin",
     "PlayerTabOverlayMixin"
   ],
   "injectors": {

@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,6 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -26,6 +28,8 @@ import tuxi.wolfbugs.commands.CombatTrackerCommand;
 import tuxi.wolfbugs.commands.ModListCommand;
 import tuxi.wolfbugs.commands.MorphCommands;
 import tuxi.wolfbugs.mixin.BooleanValueAccessor;
+import tuxi.wolfbugs.networking.ClientboundMorphPacket;
+import tuxi.wolfbugs.networking.ClientboundUnmorphPacket;
 
 import java.net.SocketAddress;
 import java.util.*;
@@ -41,7 +45,7 @@ public class WolfBugs {
     public static final HashMap<SocketAddress, List<String>> scheduleModList = new HashMap<>();
     public static final HashMap<UUID, List<String>> modList = new HashMap<>();
 
-    private static final String PROTOCOL_VERSION = "1.3.2";
+    private static final String PROTOCOL_VERSION = "2";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MODID, "main"),
             () -> PROTOCOL_VERSION,
@@ -53,9 +57,35 @@ public class WolfBugs {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, WolfBugsConfig.GENERAL_SPEC, "wolfbugs.toml");
+
+        int messageId = 0;
+        CHANNEL.messageBuilder(ClientboundMorphPacket.class, messageId)
+                .encoder(ClientboundMorphPacket::write)
+                .decoder(ClientboundMorphPacket::new)
+                .consumerMainThread(ClientboundMorphPacket::handle)
+                .add();
+        messageId++;
+        CHANNEL.messageBuilder(ClientboundUnmorphPacket.class, messageId)
+                .encoder(ClientboundUnmorphPacket::write)
+                .decoder(ClientboundUnmorphPacket::new)
+                .consumerMainThread(ClientboundUnmorphPacket::handle)
+                .add();
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    @SubscribeEvent
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent joinEvent) {
+        if (joinEvent.getEntity() instanceof ServerPlayer player) {
+            MorphCommands.sendAllMorphedToPlayer(player);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent leaveEvent) {
+        if (leaveEvent.getEntity() instanceof ServerPlayer player) {
+            MorphCommands.removePlayer(player);
+        }
+    }
+
     @SubscribeEvent
     public void onServerChat(ServerChatEvent event) {
         if (event.getPlayer().getServer() != null && event.getPlayer().getServer().getProfilePermissions(event.getPlayer().getGameProfile()) < 2 && !event.getPlayer().getServer().getGameRules().getBoolean(WolfBugs.RULE_ALLOWCHATTING)) {
