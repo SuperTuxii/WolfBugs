@@ -50,7 +50,6 @@ public class MorphCommands {
     public static void morphPlayer(ServerPlayer morphPlayer, ServerPlayer morphIntoTarget) {
         morphedPlayers.put(morphPlayer.getUUID(), morphIntoTarget.getUUID());
         WolfBugs.CHANNEL.send(PacketDistributor.ALL.noArg(), new ClientboundMorphPacket(morphPlayer.getUUID(), morphIntoTarget.getUUID()));
-        WolfBugs.LOGGER.info(morphedPlayers.toString());
     }
 
     public static void unMorphPlayer(ServerPlayer morphedPlayer) {
