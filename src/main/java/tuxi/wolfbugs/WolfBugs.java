@@ -82,7 +82,7 @@ public class WolfBugs {
     @SubscribeEvent
     public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent leaveEvent) {
         if (leaveEvent.getEntity() instanceof ServerPlayer player) {
-            MorphCommands.removePlayer(player);
+            MorphCommands.removePlayer(player.getUUID());
         }
     }
 
