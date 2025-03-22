@@ -16,7 +16,6 @@
     "TeamMsgCommandMixin"
   ],
   "client": [
-    "AbstractClientPlayerMixin",
     "PlayerInfoMixin",
     "PlayerTabOverlayMixin"
   ],

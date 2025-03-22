@@ -25,7 +25,7 @@ public record ClientboundMorphPacket(UUID morphPlayer, UUID morphIntoPlayer) {
             MorphPlayerInfo morphPlayerInfo = (MorphPlayerInfo) clientPacketListener.getPlayerInfo(morphPlayer);
             PlayerInfo morphIntoPlayerInfo = clientPacketListener.getPlayerInfo(morphIntoPlayer);
             if (morphPlayerInfo != null)
-                morphPlayerInfo.wolfBugs$morph(morphIntoPlayerInfo);
+                morphPlayerInfo.wolfBugs$morph(((MorphPlayerInfo) morphIntoPlayerInfo));
         }else {
             WolfBugs.LOGGER.warn("Expected PacketListener to be ClientPacketListener, but is {}", ctx.get().getNetworkManager().getPacketListener().getClass());
         }
