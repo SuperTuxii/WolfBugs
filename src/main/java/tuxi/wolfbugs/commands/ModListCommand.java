@@ -21,8 +21,13 @@ public class ModListCommand {
                 .requires(cs -> cs.isPlayer() && cs.getEntity() != null && cs.getEntity().getTags().contains("MOD"))
                 .then(Commands.literal("show")
                         .then(Commands.argument("target", EntityArgument.player())
+                                .executes(ctx -> modList(ctx.getSource(), EntityArgument.getPlayer(ctx, "target"), false))
                                 .then(Commands.argument("fullList", BoolArgumentType.bool())
                                         .executes(ctx -> modList(ctx.getSource(), EntityArgument.getPlayer(ctx, "target"), BoolArgumentType.getBool(ctx, "fullList")))))
+                ).then(Commands.literal("list")
+                        .executes(ctx -> listModLists(ctx.getSource(), false))
+                        .then(Commands.argument("fullList", BoolArgumentType.bool())
+                                .executes(ctx -> listModLists(ctx.getSource(), BoolArgumentType.getBool(ctx, "fullList"))))
                 ).then(Commands.literal("allow")
                         .then(Commands.argument("modId", StringArgumentType.word())
                                 .executes(ctx -> allowMod(ctx.getSource(), StringArgumentType.getString(ctx, "modId"))))
@@ -38,9 +43,15 @@ public class ModListCommand {
 
     private static int modList(CommandSourceStack ctx, ServerPlayer player, boolean fullList) {
         if (WolfBugs.modList.containsKey(player.getUUID())) {
-            ctx.sendSystemMessage(Component.literal("ModList for " + player.getScoreboardName() + ": " + getColoredModList(WolfBugs.modList.get(player.getUUID()), fullList)));
+            ctx.sendSystemMessage(Component.literal(String.format("§cModList for %s§c: %s", player.getScoreboardName(), getColoredModList(WolfBugs.modList.get(player.getUUID()), fullList))));
+//            ctx.sendSystemMessage(Component.translatable("wolfbugs.modlist.modlist_display", player.getScoreboardName(), getColoredModList(WolfBugs.modList.get(player.getUUID()), fullList)));
             return WolfBugs.modList.get(player.getUUID()).size();
         }
+        return 0;
+    }
+
+    private static int listModLists(CommandSourceStack ctx, boolean fullList) {
+        ctx.getServer().getPlayerList().getPlayers().forEach(player -> modList(ctx, player, fullList));
         return 0;
     }
 
@@ -49,6 +60,7 @@ public class ModListCommand {
         List<String> deniedMods = new ArrayList<>(WolfBugsConfig.modBlacklist.get());
         if (allowedMods.contains(modId)) {
             ctx.sendSystemMessage(Component.literal("§cModId is already in Mod-WhiteList"));
+//            ctx.sendSystemMessage(Component.translatable("wolfbugs.modlist.already_whitelisted"));
             return 0;
         }
         allowedMods.add(modId);
@@ -57,7 +69,8 @@ public class ModListCommand {
         WolfBugsConfig.modWhitelist.save();
         WolfBugsConfig.modBlacklist.set(deniedMods);
         WolfBugsConfig.modBlacklist.save();
-        ctx.sendSystemMessage(Component.literal("§aSuccessfully added to Mod-WhiteList. Current Mod-WhiteList is:\n§f" + Arrays.toString(allowedMods.toArray())));
+        ctx.sendSystemMessage(Component.literal(String.format("§aSuccessfully added to Mod-WhiteList. Current Mod-WhiteList is:\n§f%s", Arrays.toString(allowedMods.toArray()))));
+//        ctx.sendSystemMessage(Component.translatable("wolfbugs.modlist.whitelist_success", Arrays.toString(allowedMods.toArray())));
         return 1;
     }
 
@@ -66,6 +79,7 @@ public class ModListCommand {
         List<String> deniedMods = new ArrayList<>(WolfBugsConfig.modBlacklist.get());
         if (deniedMods.contains(modId)) {
             ctx.sendSystemMessage(Component.literal("§cModId is already in Mod-BlackList"));
+//            ctx.sendSystemMessage(Component.translatable("wolfbugs.modlist.already_blacklisted"));
             return 0;
         }
         allowedMods.remove(modId);
@@ -74,7 +88,8 @@ public class ModListCommand {
         WolfBugsConfig.modWhitelist.save();
         WolfBugsConfig.modBlacklist.set(deniedMods);
         WolfBugsConfig.modBlacklist.save();
-        ctx.sendSystemMessage(Component.literal("§aSuccessfully added to Mod-BlackList. Current Mod-BlackList is:\n§f" + Arrays.toString(deniedMods.toArray())));
+        ctx.sendSystemMessage(Component.literal(String.format("§aSuccessfully added to Mod-BlackList. Current Mod-BlackList is:\n§f%s", Arrays.toString(deniedMods.toArray()))));
+//        ctx.sendSystemMessage(Component.translatable("wolfbugs.modlist.blacklist_success", Arrays.toString(deniedMods.toArray())));
         return 1;
     }
 
@@ -88,10 +103,11 @@ public class ModListCommand {
         WolfBugsConfig.modBlacklist.set(deniedMods);
         WolfBugsConfig.modBlacklist.save();
         ctx.sendSystemMessage(Component.literal("§aSuccessfully removed from Mod-WhiteList and Mod-BlackList"));
+//        ctx.sendSystemMessage(Component.translatable("wolfbugs.modlist.neutralize_success"));
         return 1;
     }
 
-    private static String getColoredModList(List<String> mods, boolean fullList) {
+    public static Component getColoredModList(List<String> mods, boolean fullList) {
         List<? extends String> allowedMods = WolfBugsConfig.modWhitelist.get();
         List<? extends String> deniedMods = WolfBugsConfig.modBlacklist.get();
         boolean onlyAllowed = true;
@@ -116,6 +132,6 @@ public class ModListCommand {
             }
         }
         if (list.toString().contains("§f, ")) list.replace(list.lastIndexOf("§f, "), list.length(), "");
-        return onlyAllowed && !fullList ? "§2Only allowed mods have been found" : list.toString();
+        return onlyAllowed && !fullList ? Component.literal("§2Only allowed mods have been found")/*Component.translatable("wolfbugs.modlist.only_allowed")*/ : Component.literal(list.toString());
     }
 }

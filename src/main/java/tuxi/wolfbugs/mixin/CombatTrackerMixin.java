@@ -38,7 +38,7 @@ public abstract class CombatTrackerMixin implements CombatTrackerContainer {
 
     @Override
     public boolean wolfBugs$removeLatest(LivingEntity entity) {
-        if (((LivingEntityAccessor) mob).getLastHurtByPlayer().is(entity)) mob.setLastHurtByMob(null);
+        if (((LivingEntityAccessor) mob).getLastHurtByPlayer() != null && ((LivingEntityAccessor) mob).getLastHurtByPlayer().is(entity)) mob.setLastHurtByPlayer(null);
         if (mob.getLastHurtByMob() != null && mob.getLastHurtByMob().is(entity)) mob.setLastHurtByMob(null);
         entries.sort(Comparator.comparingInt(CombatEntry::getTime));
         for (int i = entries.size()-1; i >= 0; i--) {
@@ -54,7 +54,7 @@ public abstract class CombatTrackerMixin implements CombatTrackerContainer {
     @Override
     public int wolfBugs$remove(LivingEntity entity) {
         int found = 0;
-        if (((LivingEntityAccessor) mob).getLastHurtByPlayer().is(entity)) mob.setLastHurtByMob(null);
+        if (((LivingEntityAccessor) mob).getLastHurtByPlayer() != null && ((LivingEntityAccessor) mob).getLastHurtByPlayer().is(entity)) mob.setLastHurtByPlayer(null);
         if (mob.getLastHurtByMob() != null && mob.getLastHurtByMob().is(entity)) mob.setLastHurtByMob(null);
         entries.sort(Comparator.comparingInt(CombatEntry::getTime));
         for (int i = entries.size()-1; i >= 0; i--) {

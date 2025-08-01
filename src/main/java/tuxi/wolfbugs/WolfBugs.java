@@ -76,6 +76,29 @@ public class WolfBugs {
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent joinEvent) {
         if (joinEvent.getEntity() instanceof ServerPlayer player) {
             MorphCommands.sendAllMorphedToPlayer(player);
+            if (player.getTags().contains("MOD")) {
+                List<? extends String> savedBlacklistUsers = WolfBugsConfig.savedBlacklistUsers.get();
+                if (savedBlacklistUsers.isEmpty()) {
+                    player.sendSystemMessage(Component.literal("§aNo Players using blacklisted Mods were saved"));
+//                    player.sendSystemMessage(Component.translatable("wolfbugs.modlist.no_saved_blacklist_users"));
+                } else {
+                    player.sendSystemMessage(Component.literal("Moderators missed these Players using blacklisted Mods:"));
+//                    player.sendSystemMessage(Component.translatable("wolfbugs.modlist.following_blacklist_users_saved"));
+                    savedBlacklistUsers.forEach(data -> {
+                        String[] splitData = data.split("\\|");
+                        player.sendSystemMessage(Component.literal(String.format("§c§lThe Player §4§l%s§c§l is using blacklisted Mods!\n§cModList for §4%s§c: %s",
+                                splitData[0], splitData[0], splitData[1])));
+//                        player.sendSystemMessage(Component.translatable("wolfbugs.modlist.player_using_blacklisted",
+//                                        "§4§l" + splitData[0])
+//                                .append(Component.literal("\n"))
+//                                .append(Component.translatable("wolfbugs.modlist.modlist_display",
+//                                        "§4" + splitData[0],
+//                                        splitData[1].equals("wolfbugs.modlist.only_allowed") ?
+//                                                Component.translatable("wolfbugs.modlist.only_allowed") : splitData[1])));
+                    });
+                    WolfBugsConfig.savedBlacklistUsers.set(List.of());
+                }
+            }
         }
     }
 

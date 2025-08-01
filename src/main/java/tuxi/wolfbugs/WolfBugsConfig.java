@@ -9,6 +9,7 @@ public class WolfBugsConfig {
 
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> modWhitelist;
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> modBlacklist;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> savedBlacklistUsers;
 
     static {
         ForgeConfigSpec.Builder configBuilder = new ForgeConfigSpec.Builder();
@@ -20,6 +21,7 @@ public class WolfBugsConfig {
         builder.push("/modlist Command");
         modWhitelist = builder.defineList("mod_whitelist", List.of( "cgm", "beautify", "ellemes_container_lib", "ctm", "placebo", "modernfix", "artifacts", "mixinextras", "the_classics", "moa_decor_science", "apotheosis", "starlight", "luckperms", "forge", "pfm", "embeddium", "rubidium", "corpse", "wolf3companion2", "useless_sword", "minecraft", "handcrafted", "voicechat", "moonlight", "mousetweaks", "wolfbugs", "inventorytotem", "solidspectator", "chisel_chipped_integration", "chipped", "structureexpansion", "curios", "patchouli", "tempban", "collective", "autoreglib", "quark", "supplementaries", "framedblocks", "expandedstorage", "resourcefullib", "worldedit", "morevanillaarmor", "architectury", "mysticpotions", "ferritecore", "wolf3companion", "framework", "betterinvisibility", "expandability", "openloader", "essential"), entry -> true);
         modBlacklist = builder.defineList("mod_blacklist", List.of(), entry -> true);
+        savedBlacklistUsers = builder.defineList("saved_blacklist_alerts", List.of(), entry -> true);
         builder.pop();
     }
 }

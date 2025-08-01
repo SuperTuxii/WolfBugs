@@ -1,6 +1,8 @@
 ### Fixes the Minecraft KillCredit System:
 
-The killer is now the one, who did the last hit. This also applies to none entity damage death causes. If there are no combat tracker entries, because the entity is not in combat, there is no killer.
+The killer is now the one who did the last hit.
+This also applies to none entity damage death causes.
+If there are no combat tracker entries because the entity is not in combat, there is no killer.
 
 
 ### Adds a new Command `/combattracker`:
@@ -9,11 +11,12 @@ The killer is now the one, who did the last hit. This also applies to none entit
 - `/combattracker remove all <targets> <entityToRemove>` (Removes all entries by the given entity in the combat trackers of the given targets. Returns the amount of entries that got removed)
 - `/combattracker clear <targets> `(Clears the combat trackers of the given targets. Returns the amount of combat trackers that got cleared)
 
-### Adds a new Command `/modlist`:
+### Adds a new Command `/modlist` (requires `MOD` tag):
 
-- `/modlist show <target> <fullList>` (Shows the ModList for the given target. If fullList is true, the full ModList will be outputted, otherwise all whitelisted mods will be filtered out)
+- `/modlist show <target> [<fullList>]` (Shows the ModList for the given target. If fullList is true, the full ModList will be outputted, otherwise all whitelisted mods will be filtered out (default is `false`))
+- `/modlist list [<fullList>]` (Shows the ModList for every online player. The fullList argument has the same function as in `/modlist show <target> [<fullList>]` (default is also `false`))
 - `/modlist allow <modId>` (Adds the given modId to the Mod-WhiteList)
-- `/modlist deny <modId>` (Adds the given modId to the Mod-BlackList)
+- `/modlist deny <modId>` (Adds the given modId to the Mod-BlackList. If a player joins with a blacklisted Mod, any players with the `MOD` tag will be alerted. If non are online, the player and modlist will be saved and displayed, when the next moderator joins)
 - `/modlist neutralize <modId>` (Removes the given modId from the Mod-WhiteList and the Mod-BlackList)
 
 **This Command uses the ModList that was sent by the client:**

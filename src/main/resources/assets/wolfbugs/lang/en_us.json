@@ -1,0 +1,16 @@
+{
+  "wolfbugs.modlist.no_saved_blacklist_users": "§aNo Players using blacklisted Mods were saved",
+  "wolfbugs.modlist.following_blacklist_users_saved": "Moderators missed these Players using blacklisted Mods:",
+  "wolfbugs.modlist.player_using_blacklisted": "§c§lThe Player %s§c§l is using blacklisted Mods!",
+  "wolfbugs.modlist.modlist_display": "§cModList for %s§c: %s",
+  "wolfbugs.modlist.already_whitelisted": "§cModId is already in Mod-WhiteList",
+  "wolfbugs.modlist.whitelist_success": "§aSuccessfully added to Mod-WhiteList. Current Mod-WhiteList is:\n§f%s",
+  "wolfbugs.modlist.already_blacklisted": "§cModId is already in Mod-BlackList",
+  "wolfbugs.modlist.blacklist_success": "§aSuccessfully added to Mod-BlackList. Current Mod-BlackList is:\n§f%s",
+  "wolfbugs.modlist.neutralize_success": "§aSuccessfully removed from Mod-WhiteList and Mod-BlackList",
+  "wolfbugs.modlist.only_allowed": "§2Only allowed mods have been found",
+  "wolfbugs.combat_tracker.error_non_living": "The entity %s is not a LivingEntity",
+  "wolfbugs.combat_tracker.remove_latest_success": "Removed latest entry by %s in %d combat-trackers of %d entites",
+  "wolfbugs.combat_tracker.remove_all_success": "Removed %s in %d entries in %d combat-trackers of %d entites",
+  "wolfbugs.combat_tracker.clear_success": "Cleared %d combat-trackers of %d entites"
+}

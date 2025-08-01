@@ -14,7 +14,8 @@ import tuxi.wolfbugs.CombatTrackerContainer;
 import java.util.Collection;
 
 public class CombatTrackerCommand {
-    private static final DynamicCommandExceptionType ERROR_NON_LIVING = new DynamicCommandExceptionType((entity) -> Component.literal("The entity " + entity.toString() + " "));
+    private static final DynamicCommandExceptionType ERROR_NON_LIVING = new DynamicCommandExceptionType(
+            (entity) -> Component.literal(String.format("The entity %s is not a LivingEntity", entity.toString()))/*Component.translatable("wolfbugs.combat_tracker.error_non_living", entity.toString())*/);
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("combattracker")
@@ -41,7 +42,8 @@ public class CombatTrackerCommand {
                                                 for (Entity entity : targets) {
                                                     if (((CombatTrackerContainer) ((LivingEntity) entity).getCombatTracker()).wolfBugs$removeLatest((LivingEntity) toRemove)) i++;
                                                 }
-                                                ctx.getSource().sendSuccess(Component.literal("Removed latest entry by " + toRemove.getName().getString() + " in " + i + " combat-trackers of " + targets.size() + " entites"), true);
+                                                ctx.getSource().sendSuccess(Component.literal(String.format("Removed latest entry by %s in %d combat-trackers of %d entites", toRemove.getName(), i, targets.size())), true);
+//                                                ctx.getSource().sendSuccess(Component.translatable("wolfbugs.combat_tracker.remove_latest_success", toRemove.getName(), i, targets.size()), true);
                                                 return i;
                                             })
                                     )
@@ -64,7 +66,8 @@ public class CombatTrackerCommand {
                                                     entries += found;
                                                     if (found > 0) trackers++;
                                                 }
-                                                ctx.getSource().sendSuccess(Component.literal("Removed " + toRemove.getName().getString() + " in " + entries + " entries in " + trackers + " combat-trackers of " + targets.size() + " entites"), true);
+                                                ctx.getSource().sendSuccess(Component.literal(String.format("Removed %s in %d entries in %d combat-trackers of %d entites", toRemove.getName().getString(), entries, trackers, targets.size())), true);
+//                                                ctx.getSource().sendSuccess(Component.translatable("wolfbugs.combat_tracker.remove_all_success", toRemove.getName().getString(), entries, trackers, targets.size()), true);
                                                 return entries;
                                             })
                                     )
@@ -87,7 +90,8 @@ public class CombatTrackerCommand {
                                 for (Entity entity : targets) {
                                     if (((CombatTrackerContainer) ((LivingEntity) entity).getCombatTracker()).wolfBugs$clear()) i++;
                                 }
-                                ctx.getSource().sendSuccess(Component.literal("Cleared " + i + " combat-trackers of " + targets.size() + " entites"), true);
+                                ctx.getSource().sendSuccess(Component.literal(String.format("Cleared %d combat-trackers of %d entites", i, targets.size())), true);
+//                                ctx.getSource().sendSuccess(Component.translatable("wolfbugs.combat_tracker.clear_success", i, targets.size()), true);
                                 return i;
                             })
                     );
