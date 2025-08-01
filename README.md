@@ -9,7 +9,7 @@ If there are no combat tracker entries because the entity is not in combat, ther
 
 - `/combattracker remove latest <targets> <entityToRemove>` (Removes the latest entry by the given entity in the combat trackers of the given targets. Returns the amount of entries that got removed)
 - `/combattracker remove all <targets> <entityToRemove>` (Removes all entries by the given entity in the combat trackers of the given targets. Returns the amount of entries that got removed)
-- `/combattracker clear <targets> `(Clears the combat trackers of the given targets. Returns the amount of combat trackers that got cleared)
+- `/combattracker clear <targets>` (Clears the combat trackers of the given targets. Returns the amount of combat trackers that got cleared)
 
 **Make sure that any entity used in this command has to be a LivingEntity, otherwise the command will throw an error and will not run!**
 
