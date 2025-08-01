@@ -18,7 +18,7 @@ If there are no combat tracker entries because the entity is not in combat, ther
 - `/modlist show <target> [<fullList>]` (Shows the ModList for the given target. If fullList is true, the full ModList will be outputted, otherwise all whitelisted mods will be filtered out (default is `false`))
 - `/modlist list [<fullList>]` (Shows the ModList for every online player. The fullList argument has the same function as in `/modlist show <target> [<fullList>]` (default is also `false`))
 - `/modlist allow <modId>` (Adds the given modId to the Mod-WhiteList)
-- `/modlist deny <modId>` (Adds the given modId to the Mod-BlackList. If a player joins with a blacklisted Mod, any players with the `MOD` tag will be alerted. If non are online, the player and modlist will be saved and displayed, when the next moderator joins)
+- `/modlist deny <modId>` (Adds the given modId to the Mod-BlackList. If a player joins with a blacklisted Mod, any players with the `MOD` tag will be alerted. If non are online, the player and modlist will be saved and displayed for the next moderator that joins)
 - `/modlist neutralize <modId>` (Removes the given modId from the Mod-WhiteList and the Mod-BlackList)
 
 **This Command uses the ModList that was sent by the client:**
