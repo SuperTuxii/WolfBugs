@@ -45,6 +45,7 @@ public class WolfBugs {
 
     public static final GameRules.Key<GameRules.BooleanValue> RULE_ALLOWCHATTING = GameRules.register("allowChatting", GameRules.Category.CHAT, BooleanValueAccessor.create(false));
     public static final PlayerTrigger USED_DEATH_PROTECT = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation(MODID, "used_death_protect")));
+    public static final PlayerTrigger JOINED = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation(MODID, "joined")));
 
     public static final HashMap<SocketAddress, List<String>> scheduleModList = new HashMap<>();
     public static final HashMap<UUID, List<String>> modList = new HashMap<>();
@@ -79,6 +80,7 @@ public class WolfBugs {
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent joinEvent) {
         if (joinEvent.getEntity() instanceof ServerPlayer player) {
+            WolfBugs.JOINED.trigger(player);
             MorphCommands.sendAllMorphedToPlayer(player);
             if (player.getTags().contains("MOD")) {
                 List<? extends String> savedBlacklistUsers = WolfBugsConfig.savedBlacklistUsers.get();

@@ -4,7 +4,6 @@ The killer is now the one who did the last hit.
 This also applies to none entity damage death causes.
 If there are no combat tracker entries because the entity is not in combat, there is no killer.
 
-
 ### Adds a new Command `/combattracker`:
 
 - `/combattracker remove latest <targets> <entityToRemove>` (Removes the latest entry by the given entity in the combat trackers of the given targets. Returns the amount of entries that got removed)
@@ -50,6 +49,10 @@ For example (active morphs in order of application → shown one):
 - `/deathprotect remove <targets>` (Removes the death protection for the given targets)
 
 **The death protection is not persistent (saved), which means that the death protection will default to disabled after a player has left!**
+
+### Adds a new Advancement Trigger `wolfbugs:joined`:
+
+It is triggered when a player joins.
 
 ### Adds a new gamerule `allowChatting`:
 
