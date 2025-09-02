@@ -11,6 +11,7 @@
     "EmoteCommandsMixin",
     "HandshakeHandlerMixin",
     "LivingEntityAccessor",
+    "LivingEntityMixin",
     "MsgCommandMixin",
     "PlayerListMixin",
     "TeamMsgCommandMixin"

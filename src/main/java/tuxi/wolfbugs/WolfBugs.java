@@ -4,6 +4,8 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +27,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.slf4j.Logger;
 import tuxi.wolfbugs.commands.CombatTrackerCommand;
+import tuxi.wolfbugs.commands.DeathProtectCommand;
 import tuxi.wolfbugs.commands.ModListCommand;
 import tuxi.wolfbugs.commands.MorphCommands;
 import tuxi.wolfbugs.mixin.BooleanValueAccessor;
@@ -41,6 +44,7 @@ public class WolfBugs {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final GameRules.Key<GameRules.BooleanValue> RULE_ALLOWCHATTING = GameRules.register("allowChatting", GameRules.Category.CHAT, BooleanValueAccessor.create(false));
+    public static final PlayerTrigger USED_DEATH_PROTECT = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation(MODID, "used_death_protect")));
 
     public static final HashMap<SocketAddress, List<String>> scheduleModList = new HashMap<>();
     public static final HashMap<UUID, List<String>> modList = new HashMap<>();
@@ -120,6 +124,7 @@ public class WolfBugs {
     @SubscribeEvent
     public void onCommandsRegister(RegisterCommandsEvent event) {
         CombatTrackerCommand.register(event.getDispatcher());
+        DeathProtectCommand.register(event.getDispatcher());
         ModListCommand.register(event.getDispatcher());
         MorphCommands.register(event.getDispatcher());
     }

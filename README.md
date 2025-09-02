@@ -43,6 +43,14 @@ For example (active morphs in order of application → shown one):
 
 **Beware that morphing the skin is handled on the client and could therefore be exploited by someone who is familiar with modding!**
 
+### Adds a new Command `/deathprotect`:
+
+- `/deathprotect add <targets>` (Adds the death protection for the given targets. When the death protection is triggered, the `wolfbugs:used_death_protect` advancement trigger will be triggered and the health will be set to `1.0f` (half a heart) for the given player. The death protection will not be removed after it is used)
+- `/deathprotect get <target>` (Returns 1 if the given target has a death protection otherwise it returns 0. The return value can then be used with `/execute store result`)
+- `/deathprotect remove <targets>` (Removes the death protection for the given targets)
+
+**The death protection is not persistent (saved), which means that the death protection will default to disabled after a player has left!**
+
 ### Adds a new gamerule `allowChatting`:
 
 - when true, all players can chat and use chatting commands.
