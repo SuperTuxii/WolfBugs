@@ -1,0 +1,2 @@
+For building, this directory should include a jar of the corpse mod. Look into the `build.gradle` to see which version is required.
+The jar file should be named `corpse-1.19.2-VERSION.jar`, where `VERSION` is the version of the corpse mod as written in `build.gradle`.
