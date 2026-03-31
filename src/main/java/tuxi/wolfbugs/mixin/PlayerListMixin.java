@@ -34,7 +34,7 @@ public abstract class PlayerListMixin {
                             .forEach(mod -> mod.sendSystemMessage(
                                     Component.literal(String.format("§c§lThe Player §4§l%s§c§l is using blacklisted Mods!\n§cModList for §4%s§c: %s",
                                             player.getScoreboardName(), player.getScoreboardName(),
-                                            ModListCommand.getColoredModList(modList, false)))
+                                            ModListCommand.getColoredModList(modList, false).getString()))
                                     /*Component.translatable("wolfbugs.modlist.player_using_blacklisted",
                                                     "§4§l" + player.getScoreboardName())
                                             .append(Component.literal("\n"))

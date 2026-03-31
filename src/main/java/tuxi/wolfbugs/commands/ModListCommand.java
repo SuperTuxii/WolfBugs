@@ -43,7 +43,7 @@ public class ModListCommand {
 
     private static int modList(CommandSourceStack ctx, ServerPlayer player, boolean fullList) {
         if (WolfBugs.modList.containsKey(player.getUUID())) {
-            ctx.sendSystemMessage(Component.literal(String.format("§cModList for %s§c: %s", player.getScoreboardName(), getColoredModList(WolfBugs.modList.get(player.getUUID()), fullList))));
+            ctx.sendSystemMessage(Component.literal(String.format("§cModList for %s§c: %s", player.getScoreboardName(), getColoredModList(WolfBugs.modList.get(player.getUUID()), fullList).getString())));
 //            ctx.sendSystemMessage(Component.translatable("wolfbugs.modlist.modlist_display", player.getScoreboardName(), getColoredModList(WolfBugs.modList.get(player.getUUID()), fullList)));
             return WolfBugs.modList.get(player.getUUID()).size();
         }
