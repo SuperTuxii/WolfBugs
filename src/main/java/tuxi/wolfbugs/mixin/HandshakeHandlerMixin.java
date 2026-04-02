@@ -39,7 +39,6 @@ public class HandshakeHandlerMixin {
                     mismatchedMods
             );
             c.get().getNetworkManager().send(new ClientboundLoginDisconnectPacket(Component.literal("§4§lUsing not allowed mods:\n§r§c" + mismatchedMods + "\n§r§4Please remove these mods to be able to join\n(§oBitte entferne die oben gennanten Mods um dem Server beitreten zu können§r§4)")));
-//            c.get().getNetworkManager().send(new ClientboundLoginDisconnectPacket(Component.translatable("strict_using_unallowed", mismatchedMods)));
             c.get().getNetworkManager().disconnect(Component.literal("Using not allowed mods: [" + mismatchedMods + "] Please remove these mods to be able to join"));
             ci.cancel();
             return;
