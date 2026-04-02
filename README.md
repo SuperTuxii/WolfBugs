@@ -61,6 +61,11 @@ It is triggered when a player joins.
 
 Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
 
+### Adds a new gamerule `strictModList`:
+
+- when true, only players with only whitelisted mods (see `/modlist`) can join the server
+- when false, all players can join the server (default)
+
 ### Fixes Bug with Corpse Mod in 1.19.2:
 
 [Detailed Issue](https://github.com/henkelmax/corpse/issues/186)
