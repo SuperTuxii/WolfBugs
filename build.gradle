@@ -167,6 +167,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     implementation fg.deobf('de.maxhenkel:corpse:1.19.2-1.0.17')
+    implementation fg.deobf('top.theillusivec4.curios:curios:1.19.2-5.1.6.4')
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -8,6 +8,7 @@
     "BooleanValueAccessor",
     "CombatTrackerMixin",
     "CorpseInventoryContainerMixin",
+    "CPacketToggleRenderMixin",
     "EmoteCommandsMixin",
     "HandshakeHandlerMixin",
     "ItemMixin",
@@ -18,6 +19,7 @@
     "TeamMsgCommandMixin"
   ],
   "client": [
+    "CuriosScreenMixin",
     "PlayerInfoMixin",
     "PlayerTabOverlayMixin"
   ],
