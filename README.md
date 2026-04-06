@@ -71,3 +71,7 @@ Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
 [Detailed Issue](https://github.com/henkelmax/corpse/issues/186)
 
 ### Makes the PlayerTabOverlay ignore the gamemode
+
+### Prevents the display of the enchantment glint on items with only curses (e.g. Curse of Binding)
+
+### Removes the ability to toggle the rendering of curios slots (for the [Curios Mod](https://github.com/TheIllusiveC4/Curios))

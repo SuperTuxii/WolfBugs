@@ -53,7 +53,7 @@ public class WolfBugs {
     public static final HashMap<UUID, List<String>> modList = new HashMap<>();
     public static boolean strictModListValue;
 
-    private static final String PROTOCOL_VERSION = "2";
+    private static final String PROTOCOL_VERSION = "3";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MODID, "main"),
             () -> PROTOCOL_VERSION,
