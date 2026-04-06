@@ -10,6 +10,7 @@
     "CorpseInventoryContainerMixin",
     "EmoteCommandsMixin",
     "HandshakeHandlerMixin",
+    "ItemMixin",
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "MsgCommandMixin",
