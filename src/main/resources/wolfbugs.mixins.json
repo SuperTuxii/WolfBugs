@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "tuxi.wolfbugs.mixin",
+  "plugin": "tuxi.wolfbugs.WolfBugsMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "wolfbugs.refmap.json",
   "mixins": [
@@ -21,7 +22,8 @@
   "client": [
     "CuriosScreenMixin",
     "PlayerInfoMixin",
-    "PlayerTabOverlayMixin"
+    "PlayerTabOverlayMixin",
+    "AbstractClientPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

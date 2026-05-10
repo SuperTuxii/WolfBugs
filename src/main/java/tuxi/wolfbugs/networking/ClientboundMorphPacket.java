@@ -2,9 +2,11 @@ package tuxi.wolfbugs.networking;
 
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import tuxi.wolfbugs.WolfBugs;
+import tuxi.wolfbugs.mixininterface.MorphAbstractClientPlayer;
 import tuxi.wolfbugs.mixininterface.MorphPlayerInfo;
 
 import java.util.UUID;
@@ -26,6 +28,23 @@ public record ClientboundMorphPacket(UUID morphPlayer, UUID morphIntoPlayer) {
             PlayerInfo morphIntoPlayerInfo = clientPacketListener.getPlayerInfo(morphIntoPlayer);
             if (morphPlayerInfo != null)
                 morphPlayerInfo.wolfBugs$morph(((MorphPlayerInfo) morphIntoPlayerInfo));
+
+            MorphAbstractClientPlayer morphAbstractClientPlayer = null;
+            MorphAbstractClientPlayer morphIntoAbstractClientPlayer = null;
+            for (AbstractClientPlayer player : clientPacketListener.getLevel().players()) {
+                if (!(player instanceof MorphAbstractClientPlayer))
+                    continue;
+                if (player.getUUID().equals(morphPlayer)) {
+                    morphAbstractClientPlayer = (MorphAbstractClientPlayer) player;
+                }
+                if (player.getUUID().equals(morphIntoPlayer)) {
+                    morphIntoAbstractClientPlayer = (MorphAbstractClientPlayer) player;
+                }
+                if (morphAbstractClientPlayer != null && morphIntoAbstractClientPlayer != null) {
+                    morphAbstractClientPlayer.wolfBugs$morph(morphIntoAbstractClientPlayer);
+                    break;
+                }
+            }
         }else {
             WolfBugs.LOGGER.warn("Expected PacketListener to be ClientPacketListener, but is {}", ctx.get().getNetworkManager().getPacketListener().getClass());
         }

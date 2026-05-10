@@ -5,6 +5,7 @@ import net.minecraft.client.gui.components.PlayerTabOverlay;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.GameType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import tuxi.wolfbugs.WolfBugs;
+import tuxi.wolfbugs.mixininterface.MorphPlayerInfo;
 
 import java.util.List;
 
@@ -30,5 +32,10 @@ public class PlayerTabOverlayMixin {
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Ordering;sortedCopy(Ljava/lang/Iterable;)Ljava/util/List;"))
     private List<PlayerInfo> changeOrdering(Ordering<PlayerInfo> ordering, Iterable<PlayerInfo> elements) {
         return WolfBugs.ClientModEvents.PLAYERLIST_ORDERING.sortedCopy(elements);
+    }
+
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerInfo;getSkinLocation()Lnet/minecraft/resources/ResourceLocation;"))
+    private ResourceLocation useTrueSkin(PlayerInfo instance) {
+        return ((MorphPlayerInfo) instance).wolfBugs$getTrueSkinLocation();
     }
 }

@@ -40,6 +40,8 @@ For example (active morphs in order of application → shown one):
 - 1, 3 → 3 (`/unmorph <player> 2`)
 - 3 → 3 (`/unmorph <player> 1`)
 
+Additionally, morphing has optional compatibility with the essential mod. Therefore, all cosmetics from a player should be copied onto a morphed player. However, the essential mod is NOT required to use WolfBugs.
+
 **Beware that morphing the skin is handled on the client and could therefore be exploited by someone who is familiar with modding!**
 
 ### Adds a new Command `/deathprotect`:

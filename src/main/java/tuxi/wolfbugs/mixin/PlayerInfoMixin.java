@@ -3,12 +3,9 @@ package tuxi.wolfbugs.mixin;
 import com.google.common.base.MoreObjects;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.scores.PlayerTeam;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,11 +23,9 @@ public abstract class PlayerInfoMixin implements MorphPlayerInfo {
     @Shadow
     @Final
     private GameProfile profile;
-    @Shadow private int latency;
     @Shadow @Nullable
     private String skinModel;
     @Shadow @Final private Map<MinecraftProfileTexture.Type, ResourceLocation> textureLocations;
-    @Shadow @Nullable private Component tabListDisplayName;
 
     @Shadow protected abstract void registerTextures();
 
@@ -59,14 +54,6 @@ public abstract class PlayerInfoMixin implements MorphPlayerInfo {
 
 
     @Override
-    public GameProfile wolfBugs$getTrueProfile() {
-        return this.profile;
-    }
-    @Override
-    public int wolfBugs$getTrueLatency() {
-        return this.latency;
-    }
-    @Override
     public boolean wolfBugs$isCapeTrulyLoaded() {
         return wolfBugs$getTrueCapeLocation() != null;
     }
@@ -92,27 +79,6 @@ public abstract class PlayerInfoMixin implements MorphPlayerInfo {
     public ResourceLocation wolfBugs$getTrueElytraLocation() {
         this.registerTextures();
         return this.textureLocations.get(MinecraftProfileTexture.Type.ELYTRA);
-    }
-    @Override @Nullable
-    public PlayerTeam wolfBugs$getTrueTeam() {
-        return Minecraft.getInstance().level.getScoreboard().getPlayersTeam(this.profile.getName());
-    }
-    @Override @Nullable
-    public Component wolfBugs$getTrueTabListDisplayName() {
-        return this.tabListDisplayName;
-    }
-
-    @Inject(method = "getProfile", at = @At("HEAD"), cancellable = true)
-    private void overrideProfile(CallbackInfoReturnable<GameProfile> cir) {
-        if (wolfBugs$isMorphed()) {
-            cir.setReturnValue(this.wolfBugs$getMorphedPlayerInfo().wolfBugs$getTrueProfile());
-        }
-    }
-    @Inject(method = "getLatency", at = @At("HEAD"), cancellable = true)
-    private void overrideLatency(CallbackInfoReturnable<Integer> cir) {
-        if (wolfBugs$isMorphed()) {
-            cir.setReturnValue(this.wolfBugs$getMorphedPlayerInfo().wolfBugs$getTrueLatency());
-        }
     }
     @Inject(method = "isCapeLoaded", at = @At("HEAD"), cancellable = true)
     private void overrideCapeLoaded(CallbackInfoReturnable<Boolean> cir) {
@@ -148,18 +114,6 @@ public abstract class PlayerInfoMixin implements MorphPlayerInfo {
     private void overrideElytraLocation(CallbackInfoReturnable<ResourceLocation> cir) {
         if (wolfBugs$isMorphed()) {
             cir.setReturnValue(this.wolfBugs$getMorphedPlayerInfo().wolfBugs$getTrueElytraLocation());
-        }
-    }
-    @Inject(method = "getTeam", at = @At("HEAD"), cancellable = true)
-    private void overrideTeam(CallbackInfoReturnable<PlayerTeam> cir) {
-        if (wolfBugs$isMorphed()) {
-            cir.setReturnValue(this.wolfBugs$getMorphedPlayerInfo().wolfBugs$getTrueTeam());
-        }
-    }
-    @Inject(method = "getTabListDisplayName", at = @At("HEAD"), cancellable = true)
-    private void overrideTabListDisplayName(CallbackInfoReturnable<Component> cir) {
-        if (wolfBugs$isMorphed()) {
-            cir.setReturnValue(this.wolfBugs$getMorphedPlayerInfo().wolfBugs$getTrueTabListDisplayName());
         }
     }
 }

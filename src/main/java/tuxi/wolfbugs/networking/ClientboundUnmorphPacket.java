@@ -1,9 +1,11 @@
 package tuxi.wolfbugs.networking;
 
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import tuxi.wolfbugs.WolfBugs;
+import tuxi.wolfbugs.mixininterface.MorphAbstractClientPlayer;
 import tuxi.wolfbugs.mixininterface.MorphPlayerInfo;
 
 import java.util.UUID;
@@ -23,6 +25,14 @@ public record ClientboundUnmorphPacket(UUID morphedPlayer) {
             MorphPlayerInfo morphedPlayerInfo = (MorphPlayerInfo) clientPacketListener.getPlayerInfo(morphedPlayer);
             if (morphedPlayerInfo != null)
                 morphedPlayerInfo.wolfBugs$unmorph();
+            for (AbstractClientPlayer player : clientPacketListener.getLevel().players()) {
+                if (!(player instanceof MorphAbstractClientPlayer))
+                    continue;
+                if (player.getUUID().equals(morphedPlayer)) {
+                    ((MorphAbstractClientPlayer) player).wolfBugs$unmorph();
+                    break;
+                }
+            }
         }else {
             WolfBugs.LOGGER.warn("Expected PacketListener to be ClientPacketListener, but is {}", ctx.get().getNetworkManager().getPacketListener().getClass());
         }
