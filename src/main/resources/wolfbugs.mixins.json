@@ -17,13 +17,16 @@
     "LivingEntityMixin",
     "MsgCommandMixin",
     "PlayerListMixin",
-    "TeamMsgCommandMixin"
+    "TeamMsgCommandMixin",
+    "DisplayInfoMixin",
+    "TreeNodePositionMixin"
   ],
   "client": [
     "CuriosScreenMixin",
     "PlayerInfoMixin",
     "PlayerTabOverlayMixin",
-    "AbstractClientPlayerMixin"
+    "AbstractClientPlayerMixin",
+    "BetterAdvancementWidgetMixin"
   ],
   "injectors": {
     "defaultRequire": 1

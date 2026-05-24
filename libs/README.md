@@ -1,2 +1,2 @@
-For building, this directory should include a jar of the corpse and curios mod and some jars from the essential mod. Look into the `build.gradle` to see which version is required.
+For building, this directory should include a jar of the corpse, curios and betteradvancements mod and some jars from the essential mod. Look into the `build.gradle` to see which version is required.
 The jar file should be named `MOD-1.19.2-VERSION.jar`, where `VERSION` is the version of the corpse mod as written in `build.gradle` and `MOD` is the mod name ( e.g. `corpse` or `curios`).

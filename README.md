@@ -56,6 +56,23 @@ Additionally, morphing has optional compatibility with the essential mod. Theref
 
 It is triggered when a player joins.
 
+### Adds new Properties to the `display` of Advancements:
+
+- `pos_x` & `pos_y` (Modifies the position of the advancement (float value))
+- `line_style` (Modifies the style of the line that is drawn from the parent to the advancement (string value))
+  - `straight` (Draws a straight line from the parent, so the line might be at an angle)
+  - `none` (No line is drawn)
+  - `begin` (The line starts and ends horizontally. If the parent and the advancement are not on the same horizontal level, a vertical line is drawn closely after the parent)
+  - `middle` (same as `begin`, but the vertical line is drawn in the middle of the parent and the advancement instead)
+  - `end` (same as `begin`, but the vertical line is drawn closely before the advancement instead)
+  - `begin_vertival` (The line starts and ends vertically. If the parent and the advancement are not on the same vertical level, a horizontal line is drawn closely after the parent)
+  - `middle_vertival` (same as `begin_vertival`, but the horizontal line is drawn in the middle of the parent and the advancement instead)
+  - `end_vertival` (same as `begin_vertival`, but the horizontal line is drawn closely before the advancement instead)
+  - `begin_auto` (A mix of `begin` and `begin_vertival`. If the horizontal distance is higher, `begin` will be used. Otherwise `begin_vertical` will be used)
+  - `middle_auto` (A mix of `middle` and `middle_vertival`. If the horizontal distance is higher, `middle` will be used. Otherwise `middle_vertical` will be used)
+  - `end_auto` (A mix of `end` and `end_vertival`. If the horizontal distance is higher, `end` will be used. Otherwise `end_vertical` will be used)
+  - If `default` or any other value is set, then the vanilla line style will be used.
+
 ### Adds a new gamerule `allowChatting`:
 
 - when true, all players can chat and use chatting commands.
