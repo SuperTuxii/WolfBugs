@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import tuxi.wolfbugs.WolfBugs;
 import tuxi.wolfbugs.mixininterface.MorphPlayerInfo;
 
 import java.util.Map;
@@ -52,7 +53,6 @@ public abstract class PlayerInfoMixin implements MorphPlayerInfo {
         wolfBugs$morphedPlayerInfo = null;
     }
 
-
     @Override
     public boolean wolfBugs$isCapeTrulyLoaded() {
         return wolfBugs$getTrueCapeLocation() != null;
@@ -82,6 +82,10 @@ public abstract class PlayerInfoMixin implements MorphPlayerInfo {
     }
     @Inject(method = "isCapeLoaded", at = @At("HEAD"), cancellable = true)
     private void overrideCapeLoaded(CallbackInfoReturnable<Boolean> cir) {
+        if (WolfBugs.capesDisabled) {
+            cir.setReturnValue(false);
+            return;
+        }
         if (wolfBugs$isMorphed()) {
             cir.setReturnValue(this.wolfBugs$getMorphedPlayerInfo().wolfBugs$isCapeTrulyLoaded());
         }
@@ -106,6 +110,10 @@ public abstract class PlayerInfoMixin implements MorphPlayerInfo {
     }
     @Inject(method = "getCapeLocation", at = @At("HEAD"), cancellable = true)
     private void overrideCapeLocation(CallbackInfoReturnable<ResourceLocation> cir) {
+        if (WolfBugs.capesDisabled) {
+            cir.setReturnValue(null);
+            return;
+        }
         if (wolfBugs$isMorphed()) {
             cir.setReturnValue(this.wolfBugs$getMorphedPlayerInfo().wolfBugs$getTrueCapeLocation());
         }

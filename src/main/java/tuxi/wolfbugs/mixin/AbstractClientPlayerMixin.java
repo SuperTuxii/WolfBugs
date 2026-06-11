@@ -12,18 +12,19 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import tuxi.wolfbugs.WolfBugs;
 import tuxi.wolfbugs.mixininterface.MorphAbstractClientPlayer;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Mixin(value = AbstractClientPlayer.class, priority = 999)
 public abstract class AbstractClientPlayerMixin implements MorphAbstractClientPlayer {
     @Unique
-    private MorphAbstractClientPlayer wolfBugs$morphedAbstractClientPlayer = null;
+    private static final State<Map<CosmeticSlot, EquippedCosmetic>> EMPTY_COSMETICS_SOURCE = observer -> Map.of();
 
     @Unique
-    private UUID wolfBugs$trueCosmeticsSourceUuid = null;
+    private MorphAbstractClientPlayer wolfBugs$morphedAbstractClientPlayer = null;
+
     @Unique
     private State<Map<CosmeticSlot, EquippedCosmetic>> wolfBugs$trueCosmeticsSource = null;
     @Unique
@@ -46,13 +47,6 @@ public abstract class AbstractClientPlayerMixin implements MorphAbstractClientPl
     @Override
     public void wolfBugs$unmorph() {
         wolfBugs$morphedAbstractClientPlayer = null;
-    }
-
-    @Override
-    public UUID wolfBugs$getTrueCosmeticsSourceUuid() {
-        if (wolfBugs$trueCosmeticsSourceUuid == null)
-            ((AbstractClientPlayerExt) this).getCosmeticsSourceUuid();
-        return wolfBugs$trueCosmeticsSourceUuid;
     }
 
     @Override
@@ -82,17 +76,11 @@ public abstract class AbstractClientPlayerMixin implements MorphAbstractClientPl
         return wolfBugs$trueCosmeticFrozenYaw;
     }
 
-    @ModifyReturnValue(method = "getCosmeticsSourceUuid", at = @At("RETURN"), remap = false)
-    private UUID overrideCosmeticsSourceUuid(UUID cosmeticsSourceUuid) {
-        wolfBugs$trueCosmeticsSourceUuid = cosmeticsSourceUuid;
-        if (wolfBugs$isMorphed())
-            return wolfBugs$morphedAbstractClientPlayer.wolfBugs$getTrueCosmeticsSourceUuid();
-        return cosmeticsSourceUuid;
-    }
-
     @ModifyReturnValue(method = "getCosmeticsSource", at = @At("RETURN"), remap = false)
     private State<Map<CosmeticSlot, EquippedCosmetic>> overrideCosmeticsSource(State<Map<CosmeticSlot, EquippedCosmetic>> cosmeticsSource) {
         wolfBugs$trueCosmeticsSource = cosmeticsSource;
+        if (WolfBugs.cosmeticsDisabled)
+            return EMPTY_COSMETICS_SOURCE;
         if (wolfBugs$isMorphed())
             return wolfBugs$morphedAbstractClientPlayer.wolfBugs$getTrueCosmeticsSource();
         return cosmeticsSource;
@@ -106,6 +94,11 @@ public abstract class AbstractClientPlayerMixin implements MorphAbstractClientPl
             return;
         wolfBugs$capeTextureRecursion = true;
         wolfBugs$trueCapeTextureLocation = ((AbstractClientPlayer) (Object) this).getCloakTextureLocation();
+        if (WolfBugs.capesDisabled) {
+            cir.setReturnValue(null);
+            wolfBugs$capeTextureRecursion = false;
+            return;
+        }
         if (wolfBugs$isMorphed()) {
             cir.setReturnValue(wolfBugs$morphedAbstractClientPlayer.wolfBugs$getTrueCapeTextureLocation());
         } else {
@@ -117,6 +110,8 @@ public abstract class AbstractClientPlayerMixin implements MorphAbstractClientPl
     @ModifyReturnValue(method = "getEmissiveCapeTexture", at = @At("RETURN"), remap = false)
     private UIdentifier overrideEmissiveCapeTexture(UIdentifier emissiveCapeTexture) {
         wolfBugs$trueEmissiveCapeTexture = emissiveCapeTexture;
+        if (WolfBugs.capesDisabled)
+            return null;
         if (wolfBugs$isMorphed())
             return wolfBugs$morphedAbstractClientPlayer.wolfBugs$getTrueEmissiveCapeTexture();
         return emissiveCapeTexture;
@@ -125,6 +120,8 @@ public abstract class AbstractClientPlayerMixin implements MorphAbstractClientPl
     @ModifyReturnValue(method = "essential$getCosmeticFrozenYaw", at = @At("RETURN"), remap = false)
     private float overrideCosmeticFrozenYaw(float cosmeticFrozenYaw) {
         wolfBugs$trueCosmeticFrozenYaw = cosmeticFrozenYaw;
+        if (WolfBugs.cosmeticsDisabled)
+            return Float.NaN;
         if (wolfBugs$isMorphed())
             return wolfBugs$morphedAbstractClientPlayer.wolfBugs$getTrueCosmeticFrozenYaw();
         return cosmeticFrozenYaw;

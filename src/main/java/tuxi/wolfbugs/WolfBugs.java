@@ -14,6 +14,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.slf4j.Logger;
 import tuxi.wolfbugs.commands.CombatTrackerCommand;
@@ -32,6 +34,7 @@ import tuxi.wolfbugs.commands.DeathProtectCommand;
 import tuxi.wolfbugs.commands.ModListCommand;
 import tuxi.wolfbugs.commands.MorphCommands;
 import tuxi.wolfbugs.mixin.BooleanValueAccessor;
+import tuxi.wolfbugs.networking.ClientboundCosmeticsGamerulePacket;
 import tuxi.wolfbugs.networking.ClientboundMorphPacket;
 import tuxi.wolfbugs.networking.ClientboundUnmorphPacket;
 
@@ -45,7 +48,9 @@ public class WolfBugs {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final GameRules.Key<GameRules.BooleanValue> RULE_ALLOWCHATTING = GameRules.register("allowChatting", GameRules.Category.CHAT, BooleanValueAccessor.create(false, (server, value) -> {}));
-    public static final GameRules.Key<GameRules.BooleanValue> RULE_STRICT_MODLIST = GameRules.register("strictModList", GameRules.Category.CHAT, BooleanValueAccessor.create(false, (server, value) -> WolfBugs.strictModListValue = value.get()));
+    public static final GameRules.Key<GameRules.BooleanValue> RULE_STRICT_MODLIST = GameRules.register("strictModList", GameRules.Category.MISC, BooleanValueAccessor.create(false, (server, value) -> WolfBugs.strictModListValue = value.get()));
+    public static final GameRules.Key<GameRules.BooleanValue> RULE_DISABLE_CAPES = GameRules.register("disableCapes", GameRules.Category.PLAYER, BooleanValueAccessor.create(false, (server, value) -> { WolfBugs.capesDisabled = value.get(); WolfBugs.updateCosmeticsGamerule(); }));
+    public static final GameRules.Key<GameRules.BooleanValue> RULE_DISABLE_COSMETICS = GameRules.register("disableCosmetics", GameRules.Category.PLAYER, BooleanValueAccessor.create(false, (server, value) -> { WolfBugs.cosmeticsDisabled = value.get(); WolfBugs.updateCosmeticsGamerule(); }));
     public static final PlayerTrigger USED_DEATH_PROTECT = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation(MODID, "used_death_protect")));
     public static final PlayerTrigger JOINED = CriteriaTriggers.register(new PlayerTrigger(new ResourceLocation(MODID, "joined")));
 
@@ -53,13 +58,20 @@ public class WolfBugs {
     public static final HashMap<UUID, List<String>> modList = new HashMap<>();
     public static boolean strictModListValue;
 
-    private static final String PROTOCOL_VERSION = "5";
+    public static boolean capesDisabled;
+    public static boolean cosmeticsDisabled;
+
+    private static final String PROTOCOL_VERSION = "6";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MODID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
     );
+
+    public static void updateCosmeticsGamerule() {
+        WolfBugs.CHANNEL.send(PacketDistributor.ALL.noArg(), new ClientboundCosmeticsGamerulePacket(capesDisabled, cosmeticsDisabled));
+    }
 
     public WolfBugs() {
         // Register ourselves for server and other game events we are interested in
@@ -78,6 +90,12 @@ public class WolfBugs {
                 .decoder(ClientboundUnmorphPacket::new)
                 .consumerMainThread(ClientboundUnmorphPacket::handle)
                 .add();
+        messageId++;
+        CHANNEL.messageBuilder(ClientboundCosmeticsGamerulePacket.class, messageId)
+                .encoder(ClientboundCosmeticsGamerulePacket::write)
+                .decoder(ClientboundCosmeticsGamerulePacket::new)
+                .consumerMainThread(ClientboundCosmeticsGamerulePacket::handle)
+                .add();
     }
 
     @SubscribeEvent
@@ -85,6 +103,7 @@ public class WolfBugs {
         if (joinEvent.getEntity() instanceof ServerPlayer player) {
             WolfBugs.JOINED.trigger(player);
             MorphCommands.sendAllMorphedToPlayer(player);
+            WolfBugs.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ClientboundCosmeticsGamerulePacket(capesDisabled, cosmeticsDisabled));
             if (player.getTags().contains("MOD")) {
                 List<? extends String> savedBlacklistUsers = WolfBugsConfig.savedBlacklistUsers.get();
                 if (savedBlacklistUsers.isEmpty()) {
@@ -137,6 +156,16 @@ public class WolfBugs {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         WolfBugs.strictModListValue = event.getServer().getGameRules().getBoolean(WolfBugs.RULE_STRICT_MODLIST);
+        WolfBugs.capesDisabled = event.getServer().getGameRules().getBoolean(WolfBugs.RULE_DISABLE_CAPES);
+        WolfBugs.cosmeticsDisabled = event.getServer().getGameRules().getBoolean(WolfBugs.RULE_DISABLE_COSMETICS);
+    }
+
+    @SubscribeEvent
+    public void onClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        if (event.getPlayer() != null && event.getPlayer().level.isClientSide()) {
+            WolfBugs.capesDisabled = false;
+            WolfBugs.cosmeticsDisabled = false;
+        }
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

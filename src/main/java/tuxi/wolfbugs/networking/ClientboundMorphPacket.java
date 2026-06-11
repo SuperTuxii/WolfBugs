@@ -45,7 +45,7 @@ public record ClientboundMorphPacket(UUID morphPlayer, UUID morphIntoPlayer) {
                     break;
                 }
             }
-        }else {
+        } else {
             WolfBugs.LOGGER.warn("Expected PacketListener to be ClientPacketListener, but is {}", ctx.get().getNetworkManager().getPacketListener().getClass());
         }
     }

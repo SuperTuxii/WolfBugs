@@ -85,6 +85,16 @@ Chatting commands are `/me`, `/msg`, `/teammsg` and associated commands.
 - when true, only players with only whitelisted mods (see `/modlist`) can join the server
 - when false, all players can join the server (default)
 
+### Adds a new gamerule `disableCapes`:
+
+- when true, all capes will be hidden
+- when false, all capes will be visible if any are selected as usual (default)
+
+### Adds a new gamerule `disableCosmetics`:
+
+- when true, all cosmetics and emotes from the Essential mod will be disabled
+- when false, all cosmetics and emotes from the Essential mod will work as usual (default)
+
 ### Fixes Bug with Corpse Mod in 1.19.2:
 
 [Detailed Issue](https://github.com/henkelmax/corpse/issues/186)

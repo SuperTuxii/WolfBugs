@@ -7,13 +7,11 @@ import gg.essential.util.UIdentifier;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
-import java.util.UUID;
 
 public interface MorphAbstractClientPlayer {
     boolean wolfBugs$isMorphed();
     void wolfBugs$morph(MorphAbstractClientPlayer morphIntoPlayer);
     void wolfBugs$unmorph();
-    UUID wolfBugs$getTrueCosmeticsSourceUuid();
     State<Map<CosmeticSlot, EquippedCosmetic>> wolfBugs$getTrueCosmeticsSource();
     ResourceLocation wolfBugs$getTrueCapeTextureLocation();
     UIdentifier wolfBugs$getTrueEmissiveCapeTexture();
